@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<workload name="s3-write-30KB-w5000" description="s3-write-30KB-w5000">
+
+  <storage type="s3" config="accesskey=cosbench;secretkey=vtY7beAEs2trr8hfBF7pmjKVoLYoIKotnzAzUIZ2;endpoint=http://10.80.11.18" />
+
+  <workflow>
+
+    <workstage name="init">
+      <work type="init" workers="1" config="cprefix=s3test;containers=r(1,1)" />
+    </workstage>
+
+<!--
+    <workstage name="prepare">
+      <work type="prepare" workers="100" config="cprefix=s3test;containers=r(1,1);objects=r(1,100000);sizes=c(30)KB" />
+    </workstage>
+-->
+
+    <workstage name="main">
+      <work name="main" workers="5000" runtime="300">
+        <operation type="write" ratio="100" config="cprefix=s3test;containers=r(1,1);objects=r(1,100000);sizes=c(30)KB" />
+      </work>
+    </workstage>
+
+    <workstage name="cleanup">
+      <work type="cleanup" workers="100" config="cprefix=s3test;containers=r(1,1);objects=r(1,100000)" />
+    </workstage>
+
+    <workstage name="dispose">
+      <work type="dispose" workers="1" config="cprefix=s3test;containers=r(1,1)" />
+    </workstage>
+
+  </workflow>
+
+</workload>
