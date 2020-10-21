@@ -1,0 +1,43 @@
+﻿OS 환경
+centos 7.0 이상
+Java* Runtime Environment 1.6 or later
+Curl 7.22.0 or later
+
+
+1] cosbench 다운로드 및 임의의 디렉토리에 압축 해제
+https://github.com/intel-cloud/cosbench/releases
+0.4.2.C4 버전 다운로드
+wget https://github.com/intel-cloud/cosbench/releases/download/v0.4.2.c4/0.4.2.c4.zip
+
+
+
+2] configuration 파일 설정
+(1) driver 설정
+대상 파일 : cosbench를 압축 해제한 폴더에서 conf/driver.conf
+변경 : 변경 X
+
+(2) controller 설정
+대상 파일 : cosbench를 압축 해제한 폴더에서 conf/controller.conf
+변경 :
+[root@client 0.4.2.c4]# cat conf/controller.conf
+[controller]
+drivers = 1
+log_level = INFO
+log_file = log/system.log
+archive_dir = archive
+
+[driver1]
+name = driver1
+url = http://192.168.52.128:18088/driver
+192.168.52.128:18088 <-- driver 노드 IP
+
+다음 명령어 실행 :
+	# unset http_proxy
+	# chmod +x *.sh
+	
+3] cosbench 실행
+(1) driver 실행 : start-driver.sh
+(2) controller 실행 : start-controller.sh
+(3) http://192.168.52.128:19088/controller/   로 접속
+192.168.52.128 <-- controller 노드 IP
+(4) controller GUI에서 submit new workloads 룰 쿨락하고 준비한 xml 형식의 워크로드 파일을 선택
